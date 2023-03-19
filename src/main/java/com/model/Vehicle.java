@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-//MiS2023
+
 @Getter
 @Setter
 public abstract class Vehicle {

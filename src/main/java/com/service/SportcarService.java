@@ -1,6 +1,5 @@
 package com.service;
 
-import com.model.Bus;
 import com.model.Manufacturer;
 import com.model.Sportcar;
 import com.repository.SportcarRepository;
@@ -28,11 +27,15 @@ public class SportcarService {
                     "Model-" + RANDOM.nextInt(1000),
                     getRandomManufacturer(),
                     BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
-                    "Max Speed-" + (RANDOM.nextInt(1000) * 2)
+                    "" + (RANDOM.nextInt(1000) * 2)
             );
             result.add(car);
-            sportcarRepository.save(car);
-            LOGGER.debug("Created sportcar {}", car.getId());
+            try {
+                sportcarRepository.save(car);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            LOGGER.debug("Created sport car {}", car.getId());
         }
         return result;
     }
@@ -44,16 +47,36 @@ public class SportcarService {
     }
 
     public void saveSportcars(List<Sportcar> sportcars) {
-        sportcarRepository.saveAll(sportcars);
+        try {
+            sportcarRepository.saveAll(sportcars);
+            LOGGER.debug("Saved {} sportcars", sportcars.size());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void updateSportcars(Sportcar car){
-        sportcarRepository.update(car);
+    public void updateSportcars(Sportcar car) {
+        try {
+            sportcarRepository.findById(car.getId())
+                    .orElseThrow(() -> new IllegalStateException("Sport car with id " + car.getId() + " not found"));
+            sportcarRepository.update(car);
+            LOGGER.debug("Updated sportcar {}", car.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
-    public void deleteSportcar(Sportcar car){
-        sportcarRepository.delete(car.getId());
-        LOGGER.debug("Deleted sportcar {}", car.getId());
+
+    public void deleteSportcar(Sportcar car) {
+        try {
+            sportcarRepository.findById(car.getId())
+                    .orElseThrow(() -> new IllegalStateException("Sport car with id " + car.getId() + " not found"));
+            sportcarRepository.delete(car.getId());
+            LOGGER.debug("Deleted sportcar {}", car.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
+
     public void printAll() {
         for (Sportcar car : sportcarRepository.getAll()) {
             System.out.println(car);

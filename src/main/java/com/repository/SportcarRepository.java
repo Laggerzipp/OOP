@@ -1,11 +1,11 @@
 package com.repository;
 
-import com.model.Auto;
 import com.model.Sportcar;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class SportcarRepository implements CrudRepository<Sportcar> {
     private final List<Sportcar> sportcars;
@@ -15,12 +15,12 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
     }
 
     @Override
-    public Sportcar getById(String id) {
+    public Optional<Sportcar> findById(String id) {
         for (Sportcar car : sportcars) {
             if (car.getId().equals(id))
-                return car;
+                return Optional.of(car);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -30,23 +30,27 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
 
     @Override
     public boolean save(Sportcar car) {
-        sportcars.add(car);
-        return true;
+        if (car == null) {
+            throw new NullPointerException("Cant save sport car if it are null");
+        } else {
+            sportcars.add(car);
+            return true;
+        }
     }
 
     @Override
     public boolean saveAll(List<Sportcar> car) {
         if (car == null) {
-            return false;
+            throw new NullPointerException("Cant save sport cars if it are null");
         }
         return sportcars.addAll(car);
     }
 
     @Override
     public boolean update(Sportcar car) {
-        final Sportcar founded = getById(car.getId());
-        if (founded != null) {
-            SportcarCopy.copy(founded, car);
+        final Optional<Sportcar> founded = findById(car.getId());
+        if (founded.isPresent()) {
+            SportcarCopy.copy(car, founded.get());
             return true;
         }
         return false;

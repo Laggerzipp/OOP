@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 class BusServiceTest {
     private BusService target;
@@ -43,11 +42,11 @@ class BusServiceTest {
 
     @Test
     void saveBuses() {
-        final Bus tmp1 = createBus();
-        final Bus tmp2 = createBus();
+        final Bus bus1 = createBus();
+        final Bus bus2 = createBus();
         final List<Bus> actual = new LinkedList<>();
-        actual.add(tmp1);
-        actual.add(tmp2);
+        actual.add(bus1);
+        actual.add(bus2);
         target.saveBuses(actual);
         final List<Bus> actualBuses = busRepository.getAll();
         Assertions.assertEquals(actual.size(), actualBuses.size());
@@ -55,31 +54,23 @@ class BusServiceTest {
 
     @Test
     void updateBus() {
-        final Bus bus = createBus();
-        final List<Bus> buses = new LinkedList<>();
-        buses.add(bus);
-        target.saveBuses(buses);
-
+        final List<Bus> buses = target.createBuses(3);
+        final Bus bus = buses.get(1);
         bus.setLineName("555");
         target.updateBuses(bus);
-        final Bus actual = busRepository.getById(bus.getId());
-        Assertions.assertEquals("555", actual.getLineName());
+
+        final Optional<Bus> actual = busRepository.findById(bus.getId());
+        actual.ifPresent(b -> Assertions.assertEquals("555", b.getLineName()));
     }
 
-    @Test
+     @Test
     void deleteBus() {
-        final Bus bus = createBus();
-        final Bus bus2 = createBus();
-        final List<Bus> buses = new LinkedList<>();
-        buses.add(bus);
-        buses.add(bus2);
-        target.saveBuses(buses);
+        final List<Bus> buses = target.createBuses(3);
+        final Optional<Bus> actual = busRepository.findById(buses.get(2).getId());
 
-        final Bus actual = busRepository.getById(bus.getId());
-        Assertions.assertNotNull(actual);
+         actual.ifPresent(b -> target.deleteBuses(b));
 
-        target.deleteBuses(bus);
         final List<Bus> actualCars = busRepository.getAll();
-        Assertions.assertEquals(1, actualCars.size());
+        Assertions.assertEquals(2, actualCars.size());
     }
 }

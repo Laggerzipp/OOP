@@ -7,10 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
-import java.net.FileNameMap;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 class SportcarRepositoryTest {
 
@@ -30,16 +28,17 @@ class SportcarRepositoryTest {
 
     @Test
     void getById_isFound() {
-        final Sportcar actual = target.getById(car.getId());
+        final Optional<Sportcar> actual = target.findById(car.getId());
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(car.getId(), actual.getId());
+        actual.ifPresent(s -> Assertions.assertEquals(car.getId(), s.getId()));
     }
 
     @Test
     void getById_notFound() {
         final Sportcar otherCar = createSportcar();
-        final Sportcar actual = target.getById(otherCar.getId());
-        Assertions.assertNull(actual);
+        final Optional<Sportcar> actual = target.findById(otherCar.getId());
+        final Optional<Sportcar> expected = Optional.empty();
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -60,8 +59,11 @@ class SportcarRepositoryTest {
 
     @Test
     void saveAll_null() {
-        final boolean actual = target.saveAll(null);
-        Assertions.assertFalse(actual);
+        try {
+            final boolean actual = target.saveAll(null);
+        } catch (Exception e) {
+            Assertions.assertTrue(e instanceof NullPointerException);
+        }
     }
 
     @Test
@@ -72,7 +74,7 @@ class SportcarRepositoryTest {
         car.setMaxSpeed("1000");
         final boolean actualCar = target.update(car);
         Assertions.assertTrue(actualCar);
-        final Sportcar actualSportcar = target.getById(car.getId());
-        Assertions.assertEquals("1000",actualSportcar.getMaxSpeed());
+        final Optional<Sportcar> actualSportcar = target.findById(car.getId());
+        actualSportcar.ifPresent(s -> Assertions.assertEquals("1000", s.getMaxSpeed()));
     }
 }

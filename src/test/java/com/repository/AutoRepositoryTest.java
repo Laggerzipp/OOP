@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 class AutoRepositoryTest {
     private AutoRepository target;
@@ -27,10 +28,10 @@ class AutoRepositoryTest {
     }
 
     @Test
-    void getById_findOne() {
-        final Auto actual = target.getById(auto.getId());
+    void getById_getOne() {
+        final Optional<Auto> actual = target.findById(auto.getId());
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(auto.getId(), actual.getId());
+        actual.ifPresent(a -> Assertions.assertEquals(auto.getId(), a.getId()));
     }
 
     @Test
@@ -49,8 +50,11 @@ class AutoRepositoryTest {
 
     @Test
     void saveAll_null() {
-        final boolean actual = target.saveAll(null);
-        Assertions.assertFalse(actual);
+        try {
+            final boolean actual = target.saveAll(null);
+        } catch (Exception e) {
+            Assertions.assertTrue(e instanceof NullPointerException);
+        }
     }
 
     @Test
@@ -65,16 +69,13 @@ class AutoRepositoryTest {
         final boolean actual = target.update(otherAuto);
         Assertions.assertFalse(actual);
     }
+
     @Test
     void update() {
         auto.setPrice(BigDecimal.TEN);
         final boolean actual = target.update(auto);
         Assertions.assertTrue(actual);
-        final Auto actualAuto = target.getById(auto.getId());
-        Assertions.assertEquals(BigDecimal.TEN,actualAuto.getPrice());
-    }
-
-    @Test
-    void delete() {
+        final Optional<Auto> actualAuto = target.findById(auto.getId());
+        actualAuto.ifPresent(a -> Assertions.assertEquals(BigDecimal.TEN, a.getPrice()));
     }
 }

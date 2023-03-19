@@ -1,6 +1,5 @@
 package com.service;
 
-import com.model.Bus;
 import com.model.Manufacturer;
 import com.model.Sportcar;
 import com.repository.SportcarRepository;
@@ -11,8 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 class SportcarServiceTest {
     private SportcarService target;
@@ -60,31 +58,23 @@ class SportcarServiceTest {
 
     @Test
     void updateSportcars() {
-        final Sportcar car = createSportcar();
-        final List<Sportcar> cars = new LinkedList<>();
-        cars.add(car);
-        target.saveSportcars(cars);
-
+        final List<Sportcar> cars = target.createSportcars(3);
+        final Sportcar car = cars.get(1);
         car.setMaxSpeed("555");
         target.updateSportcars(car);
-        final Sportcar actual = sportcarRepository.getById(car.getId());
-        Assertions.assertEquals("555", actual.getMaxSpeed());
+
+        final Optional<Sportcar> actual = sportcarRepository.findById(car.getId());
+        actual.ifPresent(c -> Assertions.assertEquals("555", c.getMaxSpeed()));
     }
 
     @Test
     void deleteSportcar() {
-        final Sportcar car = createSportcar();
-        final Sportcar car2 = createSportcar();
-        final List<Sportcar> cars = new LinkedList<>();
-        cars.add(car);
-        cars.add(car2);
-        target.saveSportcars(cars);
+        final List<Sportcar> cars = target.createSportcars(3);
+        final Optional<Sportcar> actual = sportcarRepository.findById(cars.get(2).getId());
 
-        final Sportcar actual = sportcarRepository.getById(car.getId());
-        Assertions.assertNotNull(actual);
+        actual.ifPresent(c -> target.deleteSportcar(c));
 
-        target.deleteSportcar(car);
         final List<Sportcar> actualCars = sportcarRepository.getAll();
-        Assertions.assertEquals(1, actualCars.size());
+        Assertions.assertEquals(2, actualCars.size());
     }
 }

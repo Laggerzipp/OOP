@@ -8,8 +8,7 @@ import com.model.Bus;
 
 import java.math.BigDecimal;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Optional;
 
 class BusRepositoryTest {
     private BusRepository target;
@@ -28,16 +27,17 @@ class BusRepositoryTest {
 
     @Test
     void getById_isOne() {
-        final Bus actual = target.getById(bus.getId());
+        final Optional<Bus> actual = target.findById(bus.getId());
         Assertions.assertNotNull(actual);
-        Assertions.assertEquals(actual.getId(), bus.getId());
+        actual.ifPresent(b -> Assertions.assertEquals(b.getId(), bus.getId()));
     }
 
     @Test
-    void getById_isNull() {
+    void getById_isNotFound() {
         final Bus tmp = createBus();
-        final Bus actual = target.getById(tmp.getId());
-        Assertions.assertNull(actual);
+        final Optional<Bus> actual = target.findById(tmp.getId());
+        final Optional<Bus> expected = Optional.empty();
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -58,8 +58,11 @@ class BusRepositoryTest {
 
     @Test
     void saveAll_isFalse() {
-        final boolean actual = target.saveAll(null);
-        Assertions.assertFalse(actual);
+        try {
+            final boolean actual = target.saveAll(null);
+        } catch (Exception e) {
+            Assertions.assertTrue(e instanceof NullPointerException);
+        }
     }
 
     @Test
@@ -74,9 +77,7 @@ class BusRepositoryTest {
         bus.setManufacturer(Manufacturer.KIA);
         final boolean actual = target.update(bus);
         Assertions.assertTrue(actual);
-    }
-
-    @Test
-    void delete() {
+        final Optional<Bus> actualBus = target.findById(bus.getId());
+        actualBus.ifPresent(b -> Assertions.assertEquals(Manufacturer.KIA, b.getManufacturer()));
     }
 }

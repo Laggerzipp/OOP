@@ -1,11 +1,11 @@
 package com.repository;
 
-import com.model.Auto;
 import com.model.Bus;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class BusRepository implements CrudRepository<Bus> {
     private final List<Bus> buses;
@@ -15,13 +15,13 @@ public class BusRepository implements CrudRepository<Bus> {
     }
 
     @Override
-    public Bus getById(String id) {
+    public Optional<Bus> findById(String id) {
         for (Bus bus : buses) {
             if (bus.getId().equals(id)) {
-                return bus;
+                return Optional.of(bus);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -31,27 +31,33 @@ public class BusRepository implements CrudRepository<Bus> {
 
     @Override
     public boolean save(Bus bus) {
-        buses.add(bus);
-        return true;
+        if (bus == null) {
+            throw new NullPointerException("Cant save bus if it are null");
+        } else {
+            buses.add(bus);
+            return true;
+        }
     }
 
     @Override
     public boolean saveAll(List<Bus> bus) {
         if (bus == null) {
-            return false;
+            throw new NullPointerException("Cant save buses if they are null");
+        } else {
+            return buses.addAll(bus);
         }
-        return buses.addAll(bus);
     }
 
     @Override
     public boolean update(Bus bus) {
-        final Bus founded = getById(bus.getId());
-        if (founded != null) {
-            BusCopy.copy(bus, founded);
+        final Optional<Bus> founded = findById(bus.getId());
+        if (founded.isPresent()) {
+            BusCopy.copy(bus, founded.get());
             return true;
         }
         return false;
     }
+
 
     @Override
     public boolean delete(String id) {

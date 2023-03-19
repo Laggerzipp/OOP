@@ -2,7 +2,6 @@ package com.service;
 
 import com.model.Auto;
 import com.model.Manufacturer;
-import com.model.Sportcar;
 import com.repository.AutoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,11 @@ public class AutoService {
                     "Model-" + RANDOM.nextInt(1000)
             );
             result.add(auto);
-            autoRepository.save(auto);
+            try {
+                autoRepository.save(auto);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             LOGGER.debug("Created auto {}", auto.getId());
         }
         return result;
@@ -45,21 +48,50 @@ public class AutoService {
     }
 
     public void saveAutos(List<Auto> autos) {
-        autoRepository.saveAll(autos);
+        try {
+            autoRepository.saveAll(autos);
+            LOGGER.debug("Saved {} autos", autos.size());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public List<Auto> getAll() {
+        return autoRepository.getAll();
     }
 
     public void updateAuto(Auto auto) {
-        autoRepository.update(auto);
+        try {
+            autoRepository.findById(auto.getId())
+                    .orElseThrow(() -> new IllegalStateException("Auto with id " + auto.getId() + " not found"));
+            autoRepository.update(auto);
+            LOGGER.debug("Updated auto {}", auto.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void deleteAuto(Auto auto) {
-        autoRepository.delete(auto.getId());
-        LOGGER.debug("Deleted sportcar {}", auto.getId());
+        try {
+            autoRepository.findById(auto.getId()).orElseThrow(() -> new IllegalStateException("Auto with id " + auto.getId() + " not found"));
+            autoRepository.delete(auto.getId());
+            LOGGER.debug("Deleted auto {}", auto.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void printAll() {
         for (Auto auto : autoRepository.getAll()) {
             System.out.println(auto);
+        }
+    }
+
+    public void findOneById(String id) {
+        if (id == null) {
+            autoRepository.findById("");
+        } else {
+            autoRepository.findById(id);
         }
     }
 }

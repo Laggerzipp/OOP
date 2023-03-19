@@ -2,7 +2,6 @@ package com.service;
 
 import com.model.Bus;
 import com.model.Manufacturer;
-import com.model.Sportcar;
 import com.repository.BusRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +30,11 @@ public class BusService {
                     "Line-" + RANDOM.nextInt(1000)
             );
             result.add(bus);
-            busRepository.save(bus);
+            try {
+                busRepository.save(bus);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
             LOGGER.debug("Created bus {}", bus.getId());
         }
         return result;
@@ -44,16 +47,34 @@ public class BusService {
     }
 
     public void saveBuses(List<Bus> buses) {
-        busRepository.saveAll(buses);
+        try {
+            busRepository.saveAll(buses);
+            LOGGER.debug("Saved {} buses", buses.size());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void updateBuses(Bus bus) {
-        busRepository.update(bus);
+        try {
+            busRepository.findById(bus.getId())
+                    .orElseThrow(() -> new IllegalStateException("Bus with id " + bus.getId() + " not found"));
+            busRepository.update(bus);
+            LOGGER.debug("Updated bus {}", bus.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void deleteBuses(Bus bus) {
-        busRepository.delete(bus.getId());
-        LOGGER.debug("Deleted bus {}", bus.getId());
+        try {
+            busRepository.findById(bus.getId())
+                    .orElseThrow(() -> new IllegalStateException("Bus with id " + bus.getId() + " not found"));
+            busRepository.delete(bus.getId());
+            LOGGER.debug("Deleted bus {}", bus.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void printAll() {

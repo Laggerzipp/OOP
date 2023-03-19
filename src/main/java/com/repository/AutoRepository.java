@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class AutoRepository implements CrudRepository<Auto> {
     private final List<Auto> autos;
@@ -15,13 +16,13 @@ public class AutoRepository implements CrudRepository<Auto> {
     }
 
     @Override
-    public Auto getById(String id) {
+    public Optional<Auto> findById(String id) {
         for (Auto auto : autos) {
             if (auto.getId().equals(id)) {
-                return auto;
+                return Optional.of(auto);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
@@ -31,26 +32,30 @@ public class AutoRepository implements CrudRepository<Auto> {
 
     @Override
     public boolean save(Auto auto) {
-        if (auto.getPrice().equals(BigDecimal.ZERO)) {
-            auto.setPrice(BigDecimal.valueOf(-1));
+        if (auto == null) {
+            throw new NullPointerException("Cant save auto if it are null");
+        } else {
+            if (auto.getPrice().equals(BigDecimal.ZERO)) {
+                auto.setPrice(BigDecimal.valueOf(-1));
+            }
+            autos.add(auto);
+            return true;
         }
-        autos.add(auto);
-        return true;
     }
 
     @Override
     public boolean saveAll(List<Auto> auto) {
         if (auto == null) {
-            return false;
+            throw new NullPointerException("Cant save autos if they are null");
         }
         return autos.addAll(auto);
     }
 
     @Override
     public boolean update(Auto auto) {
-        final Auto founded = getById(auto.getId());
-        if (founded != null) {
-            AutoCopy.copy(auto, founded);
+        final Optional<Auto> founded = findById(auto.getId());
+        if (founded.isPresent()) {
+            AutoCopy.copy(auto, founded.get());
             return true;
         }
         return false;

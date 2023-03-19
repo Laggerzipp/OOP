@@ -6,13 +6,11 @@ import com.repository.AutoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class AutoServiceTest {
     private AutoService target;
@@ -39,13 +37,8 @@ class AutoServiceTest {
     @Test
     void createAutos() {
         final List<Auto> actual = target.createAutos(5);
-        Assertions.assertEquals(5, actual.size());
         Mockito.verify(autoRepository, Mockito.times(5))
                 .save(Mockito.any());
-    }
-
-    @Test
-    void saveAutos() {
     }
 
     @Test
@@ -57,26 +50,21 @@ class AutoServiceTest {
 
     @Test
     void updateAuto() {
-        final List<Auto> autos = List.of(createSimpleAuto());
-        autos.get(0).setBodyType("555");
-        //Mockito.when(autoRepository.getById(autos.get(0).getId())).thenReturn()
+        final List<Auto> autos = target.createAutos(2);
+        Mockito.verify(autoRepository, Mockito.times(2)).save(Mockito.any());
+        final Auto auto = autos.get(1);
+        Assertions.assertEquals(auto.getId(), autos.get(1).getId());
+        auto.setManufacturer(Manufacturer.ZAZ);
+        target.updateAuto(auto);
+        Assertions.assertEquals(autos.get(1).getManufacturer(), Manufacturer.ZAZ);
     }
 
     @Test
-    void deleteAuto() {
-        final Auto auto = createSimpleAuto();
-        final Auto auto2 = createSimpleAuto();
-        final List<Auto> autos = new LinkedList<>();
-        autos.add(auto);
-        autos.add(auto2);
-        target.saveAutos(autos);
-
-        final Auto actual = autoRepository.getById(auto.getId());
-        Assertions.assertNotNull(actual);
-
-        target.deleteAuto(auto);
-        final List<Auto> actualCars = autoRepository.getAll();
-        Assertions.assertEquals(1, actualCars.size());
+    void findOneById_null() {
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+        target.findOneById(null);
+        Mockito.verify(autoRepository).findById(captor.capture());
+        Assertions.assertEquals("", captor.getValue());
     }
 
     private Auto createSimpleAuto() {

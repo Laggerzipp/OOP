@@ -22,25 +22,27 @@ public class Main {
         final List<Bus> buses = BUS_SERVICE.createBuses(5);
         BUS_SERVICE.saveBuses(buses);
         final List<Sportcar> sportcars = SPORTCAR_SERVICE.createSportcars(5);
-        SPORTCAR_SERVICE.saveSportcars((sportcars));
+        SPORTCAR_SERVICE.saveSportcars(sportcars);
 
-        final Sportcar car = sportcars.get(0);
+        AUTO_SERVICE.printAll();
+        System.out.println("*".repeat(120));
+        BUS_SERVICE.printAll();
+        System.out.println("*".repeat(120));
+        SPORTCAR_SERVICE.printAll();
+
+        Sportcar car = sportcars.get(0);
         car.setMaxSpeed("550");
         car.setManufacturer(Manufacturer.BMW);
         car.setModel("Model-XXX");
         car.setPrice(BigDecimal.valueOf(1200.5552));
 
-        AUTO_SERVICE.printAll();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        BUS_SERVICE.printAll();
-        System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
-        SPORTCAR_SERVICE.printAll();
-        System.out.println("==================================================================================================================");
-
+        System.out.println("*".repeat(60) + "UPDATE" + "*".repeat(60));
         SPORTCAR_SERVICE.updateSportcars(car);
         SPORTCAR_SERVICE.printAll();
-        System.out.println("--------------------------------------------------------------------------------------------------------------------");
+
+        System.out.println("*".repeat(60) + "DELETE" + "*".repeat(60));
         SPORTCAR_SERVICE.deleteSportcar(car);
         SPORTCAR_SERVICE.printAll();
+
     }
 }

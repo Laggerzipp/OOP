@@ -1,8 +1,8 @@
 package com.service;
 
 import com.model.Manufacturer;
-import com.model.Sportcar;
-import com.repository.SportcarRepository;
+import com.model.SportCar;
+import com.repository.SportCarRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,19 +11,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class SportcarService {
+public class SportCarService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AutoService.class);
     private static final Random RANDOM = new Random();
-    private final SportcarRepository sportcarRepository;
+    private final SportCarRepository sportcarRepository;
 
-    public SportcarService(SportcarRepository sportcarRepository) {
+    public SportCarService(SportCarRepository sportcarRepository) {
         this.sportcarRepository = sportcarRepository;
     }
 
-    public List<Sportcar> createSportcars(int count) {
-        List<Sportcar> result = new LinkedList<>();
+    public List<SportCar> createSportCars(int count) {
+        List<SportCar> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
-            Sportcar car = new Sportcar(
+            SportCar car = new SportCar(
                     "Model-" + RANDOM.nextInt(1000),
                     getRandomManufacturer(),
                     BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
@@ -46,16 +46,16 @@ public class SportcarService {
         return values[index];
     }
 
-    public void saveSportcars(List<Sportcar> sportcars) {
+    public void saveSportCars(List<SportCar> sportCars) {
         try {
-            sportcarRepository.saveAll(sportcars);
+            sportcarRepository.saveAll(sportCars);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        LOGGER.debug("Saved {} sport cars", sportcars.size());
+        LOGGER.debug("Saved {} sport cars", sportCars.size());
     }
 
-    public void updateSportcars(Sportcar car) {
+    public void updateSportCars(SportCar car) {
         try {
             sportcarRepository.findById(car.getId())
                     .orElseThrow(() -> new IllegalStateException("Sport car with id " + car.getId() + " not found"));
@@ -66,7 +66,7 @@ public class SportcarService {
         LOGGER.debug("Updated sport car {}", car.getId());
     }
 
-    public boolean deleteSportcar(Sportcar car) {
+    public boolean deleteSportCar(SportCar car) {
         try {
             sportcarRepository.findById(car.getId())
                     .orElseThrow(() -> new IllegalStateException("Sport car with id " + car.getId() + " not found"));
@@ -80,7 +80,7 @@ public class SportcarService {
     }
 
     public void printAll() {
-        for (Sportcar car : sportcarRepository.getAll()) {
+        for (SportCar car : sportcarRepository.getAll()) {
             System.out.println(car);
         }
     }

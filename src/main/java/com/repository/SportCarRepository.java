@@ -1,22 +1,22 @@
 package com.repository;
 
-import com.model.Sportcar;
+import com.model.SportCar;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class SportcarRepository implements CrudRepository<Sportcar> {
-    private final List<Sportcar> sportcars;
+public class SportCarRepository implements CrudRepository<SportCar> {
+    private final List<SportCar> sportCars;
 
-    public SportcarRepository() {
-        this.sportcars = new LinkedList<>();
+    public SportCarRepository() {
+        this.sportCars = new LinkedList<>();
     }
 
     @Override
-    public Optional<Sportcar> findById(String id) {
-        for (Sportcar car : sportcars) {
+    public Optional<SportCar> findById(String id) {
+        for (SportCar car : sportCars) {
             if (car.getId().equals(id))
                 return Optional.of(car);
         }
@@ -24,33 +24,33 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
     }
 
     @Override
-    public List<Sportcar> getAll() {
-        return sportcars;
+    public List<SportCar> getAll() {
+        return sportCars;
     }
 
     @Override
-    public boolean save(Sportcar car) {
+    public boolean save(SportCar car) {
         if (car == null) {
             throw new IllegalStateException("Cant save sport car if it are null");
         }
-        sportcars.add(car);
+        sportCars.add(car);
         return true;
 
     }
 
     @Override
-    public boolean saveAll(List<Sportcar> car) {
+    public boolean saveAll(List<SportCar> car) {
         if (car == null) {
             throw new IllegalStateException("Cant save sport cars if it are null");
         }
-        return sportcars.addAll(car);
+        return sportCars.addAll(car);
     }
 
     @Override
-    public boolean update(Sportcar car) {
-        final Optional<Sportcar> founded = findById(car.getId());
+    public boolean update(SportCar car) {
+        final Optional<SportCar> founded = findById(car.getId());
         if (founded.isPresent()) {
-            SportcarCopy.copy(car, founded.get());
+            SportCarCopy.copy(car, founded.get());
             return true;
         }
         return false;
@@ -58,9 +58,9 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
 
     @Override
     public boolean delete(String id) {
-        Iterator<Sportcar> iterator = sportcars.iterator();
+        Iterator<SportCar> iterator = sportCars.iterator();
         while (iterator.hasNext()) {
-            final Sportcar car = iterator.next();
+            final SportCar car = iterator.next();
             if (car.getId().equals(id)) {
                 iterator.remove();
                 return true;
@@ -69,8 +69,8 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
         return false;
     }
 
-    private static class SportcarCopy {
-        static void copy(final Sportcar from, final Sportcar to) {
+    private static class SportCarCopy {
+        static void copy(final SportCar from, final SportCar to) {
             to.setManufacturer(from.getManufacturer());
             to.setModel(from.getModel());
             to.setMaxSpeed(from.getMaxSpeed());

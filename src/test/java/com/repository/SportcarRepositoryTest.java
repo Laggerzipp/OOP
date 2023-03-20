@@ -23,7 +23,7 @@ class SportCarRepositoryTest {
     }
 
     private SportCar createSportcar() {
-        return new SportCar("Model", Manufacturer.BMW, BigDecimal.ZERO, "000");
+        return new SportCar("Model", Manufacturer.BMW, BigDecimal.ZERO, "000", 1);
     }
 
     @Test

@@ -10,19 +10,13 @@ import java.math.BigDecimal;
 public class Auto extends Vehicle {
     private String bodyType;
 
-    public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType) {
-        super(model, manufacturer, price);
+    public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, int count) {
+        super(model, manufacturer, price, count);
         this.bodyType = bodyType;
     }
 
     @Override
     public String toString() {
-        return "Auto{" +
-                "bodyType='" + bodyType + '\'' +
-                ", id='" + id + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
-                ", manufacturer=" + manufacturer +
-                '}';
+        return "Auto{" + "bodyType='" + bodyType + '\'' + ", id='" + id + '\'' + ", model='" + model + '\'' + ", price=" + price + ", manufacturer=" + manufacturer + '}';
     }
 }

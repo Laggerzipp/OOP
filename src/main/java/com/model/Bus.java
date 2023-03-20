@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 public class Bus extends Vehicle {
     private String lineName;
 
-    public Bus(String model, Manufacturer manufacturer, BigDecimal price, String lineName) {
-        super(model, manufacturer, price);
+    public Bus(String model, Manufacturer manufacturer, BigDecimal price, String lineName, int count) {
+        super(model, manufacturer, price, count);
         this.lineName = lineName;
     }
 

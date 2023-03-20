@@ -22,7 +22,7 @@ class BusRepositoryTest {
     }
 
     private Bus createBus() {
-        return new Bus("Model", Manufacturer.ZAZ, BigDecimal.ZERO, "Line-000");
+        return new Bus("Model", Manufacturer.ZAZ, BigDecimal.ZERO, "Line-000", 1);
     }
 
     @Test

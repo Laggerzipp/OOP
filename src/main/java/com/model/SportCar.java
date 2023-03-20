@@ -1,16 +1,17 @@
 package com.model;
 
 import java.math.BigDecimal;
-import  lombok.Setter;
-import  lombok.Getter;
+
+import lombok.Setter;
+import lombok.Getter;
 
 @Getter
 @Setter
-public class SportCar extends Vehicle{
+public class SportCar extends Vehicle {
     private String maxSpeed;
 
-    public SportCar(String model, Manufacturer manufacturer, BigDecimal price, String maxSpeed) {
-        super(model, manufacturer, price);
+    public SportCar(String model, Manufacturer manufacturer, BigDecimal price, String maxSpeed, int count) {
+        super(model, manufacturer, price, count);
         this.maxSpeed = maxSpeed;
     }
 

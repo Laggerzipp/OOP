@@ -36,7 +36,7 @@ class AutoServiceTest {
 
     @Test
     void createAutos() {
-        final List<Auto> actual = target.createAutos(5);
+       target.createAutos(5);
         Mockito.verify(autoRepository, Mockito.times(5))
                 .save(Mockito.any());
     }

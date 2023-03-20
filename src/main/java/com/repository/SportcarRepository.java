@@ -11,7 +11,7 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
     private final List<Sportcar> sportcars;
 
     public SportcarRepository() {
-        this.sportcars = new LinkedList<Sportcar>();
+        this.sportcars = new LinkedList<>();
     }
 
     @Override

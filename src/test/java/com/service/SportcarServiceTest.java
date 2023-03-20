@@ -68,7 +68,7 @@ class SportcarServiceTest {
     }
 
     @Test
-    void deleteSportca_true() {
+    void deleteSportcar_true() {
         final List<Sportcar> cars = target.createSportcars(3);
         final Optional<Sportcar> actual = sportcarRepository.findById(cars.get(2).getId());
 
@@ -80,7 +80,7 @@ class SportcarServiceTest {
 
     @Test
     void deleteSportcar_false() {
-        final List<Sportcar> cars = target.createSportcars(3);
+        target.createSportcars(3);
         final Optional<Sportcar> actual = Optional.of(createSportcar());
 
         actual.ifPresent(c -> Assertions.assertFalse(target.deleteSportcar(c)));

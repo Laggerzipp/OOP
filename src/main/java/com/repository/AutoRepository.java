@@ -2,7 +2,6 @@ package com.repository;
 
 import com.model.Auto;
 
-import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

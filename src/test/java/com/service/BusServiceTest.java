@@ -76,7 +76,7 @@ class BusServiceTest {
 
     @Test
     void deleteBus_false() {
-        final List<Bus> buses = target.createBuses(3);
+        target.createBuses(3);
         final Optional<Bus> actual = Optional.of(createBus());
 
         actual.ifPresent(b -> Assertions.assertFalse(target.deleteBuses(b)));

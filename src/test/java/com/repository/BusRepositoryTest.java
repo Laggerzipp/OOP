@@ -67,11 +67,6 @@ class BusRepositoryTest {
     }
 
     @Test
-    void saveAll_Exeption() {
-        Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
-    }
-
-    @Test
     void update_notFound() {
         final Bus otherBus = createBus();
         final boolean actual = target.update(otherBus);

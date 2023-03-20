@@ -31,17 +31,17 @@ public class SportcarRepository implements CrudRepository<Sportcar> {
     @Override
     public boolean save(Sportcar car) {
         if (car == null) {
-            throw new NullPointerException("Cant save sport car if it are null");
-        } else {
-            sportcars.add(car);
-            return true;
+            throw new IllegalStateException("Cant save sport car if it are null");
         }
+        sportcars.add(car);
+        return true;
+
     }
 
     @Override
     public boolean saveAll(List<Sportcar> car) {
         if (car == null) {
-            throw new NullPointerException("Cant save sport cars if it are null");
+            throw new IllegalStateException("Cant save sport cars if it are null");
         }
         return sportcars.addAll(car);
     }

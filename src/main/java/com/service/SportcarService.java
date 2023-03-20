@@ -49,32 +49,34 @@ public class SportcarService {
     public void saveSportcars(List<Sportcar> sportcars) {
         try {
             sportcarRepository.saveAll(sportcars);
-            LOGGER.debug("Saved {} sportcars", sportcars.size());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        LOGGER.debug("Saved {} sportcars", sportcars.size());
     }
 
     public void updateSportcars(Sportcar car) {
         try {
             sportcarRepository.findById(car.getId())
                     .orElseThrow(() -> new IllegalStateException("Sport car with id " + car.getId() + " not found"));
-            sportcarRepository.update(car);
-            LOGGER.debug("Updated sportcar {}", car.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        sportcarRepository.update(car);
+        LOGGER.debug("Updated sportcar {}", car.getId());
     }
 
-    public void deleteSportcar(Sportcar car) {
+    public boolean deleteSportcar(Sportcar car) {
         try {
             sportcarRepository.findById(car.getId())
                     .orElseThrow(() -> new IllegalStateException("Sport car with id " + car.getId() + " not found"));
             sportcarRepository.delete(car.getId());
             LOGGER.debug("Deleted sportcar {}", car.getId());
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     public void printAll() {

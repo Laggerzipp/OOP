@@ -47,14 +47,15 @@ class AutoRepositoryTest {
         Assertions.assertTrue(actual);
     }
 
+    @Test
+    void save_null() {
+        Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
+    }
+
 
     @Test
     void saveAll_null() {
-        try {
-            final boolean actual = target.saveAll(null);
-        } catch (Exception e) {
-            Assertions.assertTrue(e instanceof NullPointerException);
-        }
+        Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
     }
 
     @Test

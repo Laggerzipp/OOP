@@ -57,12 +57,18 @@ class BusRepositoryTest {
     }
 
     @Test
-    void saveAll_isFalse() {
-        try {
-            final boolean actual = target.saveAll(null);
-        } catch (Exception e) {
-            Assertions.assertTrue(e instanceof NullPointerException);
-        }
+    void save_null() {
+        Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
+    }
+
+    @Test
+    void saveAll_null() {
+        Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
+    }
+
+    @Test
+    void saveAll_Exeption() {
+        Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
     }
 
     @Test

@@ -32,20 +32,20 @@ public class BusRepository implements CrudRepository<Bus> {
     @Override
     public boolean save(Bus bus) {
         if (bus == null) {
-            throw new NullPointerException("Cant save bus if it are null");
-        } else {
-            buses.add(bus);
-            return true;
+            throw new IllegalStateException("Cant save bus if it are null");
         }
+        buses.add(bus);
+        return true;
+
     }
 
     @Override
     public boolean saveAll(List<Bus> bus) {
         if (bus == null) {
-            throw new NullPointerException("Cant save buses if they are null");
-        } else {
-            return buses.addAll(bus);
+            throw new IllegalStateException("Cant save buses if they are null");
         }
+        return buses.addAll(bus);
+
     }
 
     @Override

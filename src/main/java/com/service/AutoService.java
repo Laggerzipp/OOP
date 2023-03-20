@@ -50,10 +50,10 @@ public class AutoService {
     public void saveAutos(List<Auto> autos) {
         try {
             autoRepository.saveAll(autos);
-            LOGGER.debug("Saved {} autos", autos.size());
-        } catch (Exception e) {
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
+        LOGGER.debug("Saved {} autos", autos.size());
     }
 
     public List<Auto> getAll() {
@@ -64,21 +64,21 @@ public class AutoService {
         try {
             autoRepository.findById(auto.getId())
                     .orElseThrow(() -> new IllegalStateException("Auto with id " + auto.getId() + " not found"));
-            autoRepository.update(auto);
-            LOGGER.debug("Updated auto {}", auto.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        autoRepository.update(auto);
+        LOGGER.debug("Updated auto {}", auto.getId());
     }
 
     public void deleteAuto(Auto auto) {
         try {
             autoRepository.findById(auto.getId()).orElseThrow(() -> new IllegalStateException("Auto with id " + auto.getId() + " not found"));
-            autoRepository.delete(auto.getId());
-            LOGGER.debug("Deleted auto {}", auto.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        autoRepository.delete(auto.getId());
+        LOGGER.debug("Deleted auto {}", auto.getId());
     }
 
     public void printAll() {

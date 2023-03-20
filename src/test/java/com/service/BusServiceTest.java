@@ -63,14 +63,25 @@ class BusServiceTest {
         actual.ifPresent(b -> Assertions.assertEquals("555", b.getLineName()));
     }
 
-     @Test
-    void deleteBus() {
+    @Test
+    void deleteBus_true() {
         final List<Bus> buses = target.createBuses(3);
         final Optional<Bus> actual = busRepository.findById(buses.get(2).getId());
 
-         actual.ifPresent(b -> target.deleteBuses(b));
+        actual.ifPresent(b -> Assertions.assertTrue(target.deleteBuses(b)));
 
         final List<Bus> actualCars = busRepository.getAll();
         Assertions.assertEquals(2, actualCars.size());
+    }
+
+    @Test
+    void deleteBus_false() {
+        final List<Bus> buses = target.createBuses(3);
+        final Optional<Bus> actual = Optional.of(createBus());
+
+        actual.ifPresent(b -> Assertions.assertFalse(target.deleteBuses(b)));
+
+        final List<Bus> actualCars = busRepository.getAll();
+        Assertions.assertEquals(3, actualCars.size());
     }
 }

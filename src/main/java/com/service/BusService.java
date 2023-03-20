@@ -49,32 +49,34 @@ public class BusService {
     public void saveBuses(List<Bus> buses) {
         try {
             busRepository.saveAll(buses);
-            LOGGER.debug("Saved {} buses", buses.size());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        LOGGER.debug("Saved {} buses", buses.size());
     }
 
     public void updateBuses(Bus bus) {
         try {
             busRepository.findById(bus.getId())
                     .orElseThrow(() -> new IllegalStateException("Bus with id " + bus.getId() + " not found"));
-            busRepository.update(bus);
-            LOGGER.debug("Updated bus {}", bus.getId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        busRepository.update(bus);
+        LOGGER.debug("Updated bus {}", bus.getId());
     }
 
-    public void deleteBuses(Bus bus) {
+    public boolean deleteBuses(Bus bus) {
         try {
             busRepository.findById(bus.getId())
                     .orElseThrow(() -> new IllegalStateException("Bus with id " + bus.getId() + " not found"));
             busRepository.delete(bus.getId());
             LOGGER.debug("Deleted bus {}", bus.getId());
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        return false;
     }
 
     public void printAll() {

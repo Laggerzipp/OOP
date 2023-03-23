@@ -28,54 +28,82 @@ class SportCarRepositoryTest {
 
     @Test
     void getById_isFound() {
+        //configuration
         final Optional<SportCar> actual = target.findById(car.getId());
+
+        //call test method and checks
         Assertions.assertNotNull(actual);
         actual.ifPresent(s -> Assertions.assertEquals(car.getId(), s.getId()));
     }
 
     @Test
     void getById_notFound() {
+        //configuration
         final SportCar otherCar = createSportcar();
-        final Optional<SportCar> actual = target.findById(otherCar.getId());
         final Optional<SportCar> expected = Optional.empty();
+
+        //call test method
+        final Optional<SportCar> actual = target.findById(otherCar.getId());
+
+        //checks
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     void getAll() {
+        //configuration
         final SportCar otherCar = createSportcar();
         target.save(otherCar);
+
+        //call test method
         final List<SportCar> actual = target.getAll();
+
+        //checks
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(2, actual.size());
     }
 
     @Test
     void save_true() {
+        //configuration
         final SportCar otherCar = createSportcar();
+
+        //call test method
         final boolean actual = target.save(otherCar);
+
+        //checks
         Assertions.assertTrue(actual);
     }
 
     @Test
     void save_null() {
+        //configuration
+
+        //call test method and checks
         Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
     }
 
     @Test
     void saveAll_null() {
+        //configuration
+
+        //call test method and checks
         Assertions.assertThrows(IllegalStateException.class, () -> target.save(null));
     }
 
     @Test
     void update() {
+        //configuration
         final SportCar otherCar = createSportcar();
-        final boolean actual = target.update(otherCar);
-        Assertions.assertFalse(actual);
         car.setMaxSpeed("1000");
-        final boolean actualCar = target.update(car);
-        Assertions.assertTrue(actualCar);
         final Optional<SportCar> actualSportCar = target.findById(car.getId());
+        //call test method
+        final boolean actual = target.update(otherCar);
+        final boolean actualCar = target.update(car);
+
+        //checks
+        Assertions.assertFalse(actual);
+        Assertions.assertTrue(actualCar);
         actualSportCar.ifPresent(s -> Assertions.assertEquals("1000", s.getMaxSpeed()));
     }
 }

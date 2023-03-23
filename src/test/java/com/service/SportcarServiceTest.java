@@ -2,9 +2,9 @@ package com.service;
 
 import com.model.SportCar;
 import com.repository.SportCarRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -14,21 +14,19 @@ class SportCarServiceTest {
 
     @BeforeEach
     void setUp() {
-        sportcarRepository = new SportCarRepository();
+        sportcarRepository = Mockito.mock(SportCarRepository.class);
         target = new SportCarService(sportcarRepository);
     }
 
     @Test
     void create_success() {
-        final SportCar car1 = target.create();
-        final SportCar car2 = target.create();
-        sportcarRepository.save(car1);
-        sportcarRepository.save(car2);
+        //configuration
+        final List<SportCar> cars = target.createAndSave(2);
 
-        final SportCar expected = sportcarRepository.getAll().get(0);
-        Assertions.assertEquals(expected.getId(), car1.getId());
+        //call test method
+        target.saveAll(cars);
 
-        final List<SportCar> cars = sportcarRepository.getAll();
-        Assertions.assertEquals(2, cars.size());
+        //checks
+        Mockito.verify(sportcarRepository, Mockito.times(2)).save(Mockito.any());
     }
 }

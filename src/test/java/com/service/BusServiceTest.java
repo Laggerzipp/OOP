@@ -2,9 +2,9 @@ package com.service;
 
 import com.model.Bus;
 import com.repository.BusRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.List;
 
@@ -14,21 +14,19 @@ class BusServiceTest {
 
     @BeforeEach
     void setUp() {
-        busRepository = new BusRepository();
+        busRepository = Mockito.mock(BusRepository.class);
         target = new BusService(busRepository);
     }
 
     @Test
     void create_success() {
-        final Bus bus1 = target.create();
-        final Bus bus2 = target.create();
-        busRepository.save(bus1);
-        busRepository.save(bus2);
+        //configuration
+        final List<Bus> buses = target.createAndSave(2);
 
-        final Bus expected = busRepository.getAll().get(0);
-        Assertions.assertEquals(expected.getId(), bus1.getId());
+        //call test method
+        target.saveAll(buses);
 
-        final List<Bus> buses = busRepository.getAll();
-        Assertions.assertEquals(2, buses.size());
+        //checks
+        Mockito.verify(busRepository, Mockito.times(2)).save(Mockito.any());
     }
 }

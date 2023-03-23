@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.Auto;
+import com.model.vehicle.Auto;
 import com.repository.CrudRepository;
 
 import java.math.BigDecimal;
@@ -15,7 +15,7 @@ public class AutoService extends VehicleService<Auto> {
     @Override
     protected Auto create() {
         return new Auto(
-                "Model-" + RANDOM.nextInt(1000),
+                Auto.class.getSimpleName() + RANDOM.nextInt(1000),
                 getRandomManufacturer(),
                 BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
                 "Model-" + RANDOM.nextInt(1000),
@@ -53,10 +53,6 @@ public class AutoService extends VehicleService<Auto> {
     }
 
     public void findOneById(String id) {
-        if (id == null) {
-            repository.findById("");
-        } else {
-            repository.findById(id);
-        }
+        repository.findById(id == null ? "" : id);
     }
 }

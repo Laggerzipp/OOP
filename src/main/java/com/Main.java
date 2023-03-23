@@ -1,6 +1,9 @@
 package com;
 
-import com.model.*;
+import com.model.vehicle.Auto;
+import com.model.vehicle.Bus;
+import com.model.vehicle.Manufacturer;
+import com.model.vehicle.SportCar;
 import com.repository.AutoRepository;
 import com.repository.BusRepository;
 import com.repository.SportCarRepository;
@@ -45,6 +48,5 @@ public class Main {
         SPORT_CAR_SERVICE.printAll();
 
         AUTO_SERVICE.getTotalSumOf(autos.get(2).getId());
-
     }
 }

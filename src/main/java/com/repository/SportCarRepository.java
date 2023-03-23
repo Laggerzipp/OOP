@@ -1,6 +1,6 @@
 package com.repository;
 
-import com.model.SportCar;
+import com.model.vehicle.SportCar;
 
 import java.util.Iterator;
 import java.util.LinkedList;

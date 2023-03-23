@@ -1,20 +1,20 @@
 package com.repository;
 
-import com.model.Vehicle;
+import com.model.vehicle.Vehicle;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudRepository<O extends Vehicle> {
-    Optional<O> findById(String id);
+public interface CrudRepository<T extends Vehicle> {
+    Optional<T> findById(String id);
 
-    List<O> getAll();
+    List<T> getAll();
 
-    boolean save(O thing);
+    boolean save(T thing);
 
-    boolean saveAll(List<O> thing);
+    boolean saveAll(List<T> thing);
 
-    boolean update(O thing);
+    boolean update(T thing);
 
     boolean delete(String id);
 }

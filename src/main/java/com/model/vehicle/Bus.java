@@ -1,9 +1,10 @@
-package com.model;
+package com.model.vehicle;
 
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 @Getter
 @Setter
@@ -25,4 +26,12 @@ public class Bus extends Vehicle {
                 ", manufacturer=" + manufacturer +
                 '}';
     }
+
+   public static class BusComparator implements Comparator<Bus> {
+
+       @Override
+       public int compare(Bus o1, Bus o2) {
+           return o1.getId().compareTo(o2.getId());
+       }
+   }
 }

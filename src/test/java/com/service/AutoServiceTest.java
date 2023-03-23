@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.Auto;
+import com.model.vehicle.Auto;
 import com.repository.AutoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.service;
 
-import com.model.Manufacturer;
-import com.model.Vehicle;
+import com.model.vehicle.Manufacturer;
+import com.model.vehicle.Vehicle;
 import com.repository.CrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,11 +24,7 @@ public abstract class VehicleService<T extends Vehicle> {
         for (int i = 0; i < count; i++) {
             final T vehicle = create();
             result.add(vehicle);
-            try {
-                repository.save(vehicle);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
+            repository.save(vehicle);
             LOGGER.debug("Created vehicle {}", vehicle.getId());
         }
         return result;
@@ -43,46 +39,28 @@ public abstract class VehicleService<T extends Vehicle> {
     protected abstract T create();
 
     public void saveAll(List<T> vehicles) {
-        try {
-            repository.saveAll(vehicles);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        repository.saveAll(vehicles);
         LOGGER.debug("Saved {} vehicles", vehicles.size());
     }
 
     public void save(T vehicle) {
-        try {
-            repository.save(vehicle);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        repository.save(vehicle);
         LOGGER.debug("Saved {} vehicle", vehicle.getId());
     }
 
     public boolean update(T vehicle) {
-        try {
-            repository.findById(vehicle.getId())
-                    .orElseThrow(() -> new IllegalStateException("Bus with id " + vehicle.getId() + " not found"));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        repository.findById(vehicle.getId())
+                .orElseThrow(() -> new IllegalStateException("Bus with id " + vehicle.getId() + " not found"));
         repository.update(vehicle);
         LOGGER.debug("Updated vehicle {}", vehicle.getId());
         return true;
     }
 
-    public boolean delete(T vehicle) {
-        try {
-            repository.findById(vehicle.getId())
-                    .orElseThrow(() -> new IllegalStateException("Vehicle with id " + vehicle.getId() + " not found"));
-            repository.delete(vehicle.getId());
-            LOGGER.debug("Deleted bus {}", vehicle.getId());
-            return true;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
+    public void delete(T vehicle) {
+        repository.findById(vehicle.getId())
+                .orElseThrow(() -> new IllegalStateException("Vehicle with id " + vehicle.getId() + " not found"));
+        repository.delete(vehicle.getId());
+        LOGGER.debug("Deleted bus {}", vehicle.getId());
     }
 
     public void printAll() {

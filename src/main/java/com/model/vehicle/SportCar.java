@@ -1,6 +1,7 @@
-package com.model;
+package com.model.vehicle;
 
 import java.math.BigDecimal;
+import java.util.Comparator;
 
 import lombok.Setter;
 import lombok.Getter;
@@ -24,5 +25,13 @@ public class SportCar extends Vehicle {
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
                 '}';
+    }
+
+    public static class SportCarComparator implements Comparator<SportCar> {
+
+        @Override
+        public int compare(SportCar o1, SportCar o2) {
+            return o1.getId().compareTo(o2.getId());
+        }
     }
 }

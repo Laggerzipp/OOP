@@ -1,6 +1,6 @@
 package com.service;
 
-import com.model.SportCar;
+import com.model.vehicle.SportCar;
 import com.repository.SportCarRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

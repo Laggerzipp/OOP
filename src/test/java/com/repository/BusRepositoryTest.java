@@ -1,10 +1,10 @@
 package com.repository;
 
-import com.model.Manufacturer;
+import com.model.vehicle.Manufacturer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.model.Bus;
+import com.model.vehicle.Bus;
 
 import java.math.BigDecimal;
 import java.util.List;

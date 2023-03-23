@@ -1,6 +1,6 @@
 package com.repository;
 
-import com.model.Auto;
+import com.model.vehicle.Auto;
 
 import java.util.Iterator;
 import java.util.LinkedList;

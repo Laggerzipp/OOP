@@ -1,6 +1,9 @@
 package com.service;
 
-import com.model.*;
+import com.model.vehicle.Auto;
+import com.model.vehicle.Bus;
+import com.model.vehicle.Manufacturer;
+import com.model.vehicle.SportCar;
 import com.repository.AutoRepository;
 import com.repository.BusRepository;
 import com.repository.SportCarRepository;
@@ -17,20 +20,20 @@ import static org.mockito.ArgumentMatchers.argThat;
 
 class VehicleServiceTest {
 
-    private VehicleService<Auto> targetAutoService;
+    private AutoService targetAutoService;
     protected AutoRepository autoRepository;
 
-    private VehicleService<Bus> targetBusService;
+    private BusService targetBusService;
     protected BusRepository busRepository;
 
-    private VehicleService<SportCar> targetSportCarService;
+    private SportCarService targetSportCarService;
     protected SportCarRepository sportCarRepository;
 
 
     @BeforeEach
     void setUp() {
         autoRepository = Mockito.mock(AutoRepository.class);
-        targetAutoService = new VehicleService<>(autoRepository) {
+        targetAutoService = new AutoService(autoRepository) {
             @Override
             protected Auto create() {
                 return new Auto("Model", Manufacturer.BMW, BigDecimal.ZERO, "Type", 1);
@@ -38,7 +41,7 @@ class VehicleServiceTest {
         };
 
         sportCarRepository = Mockito.mock(SportCarRepository.class);
-        targetSportCarService = new VehicleService<>(sportCarRepository) {
+        targetSportCarService = new SportCarService(sportCarRepository) {
             @Override
             protected SportCar create() {
                 return new SportCar("Model", Manufacturer.ZAZ, BigDecimal.ZERO, "000", 1);
@@ -46,7 +49,7 @@ class VehicleServiceTest {
         };
 
         busRepository = Mockito.mock(BusRepository.class);
-        targetBusService = new VehicleService<>(busRepository) {
+        targetBusService = new BusService(busRepository) {
             @Override
             protected Bus create() {
                 return new Bus("Model", Manufacturer.BMW, BigDecimal.ZERO, "Line", 100);
@@ -123,8 +126,7 @@ class VehicleServiceTest {
         targetAutoService.update(actual);
 
         //checks
-        Mockito.verify(autoRepository).update(argThat(expected -> actual.getId().equals(expected.getId()) &&
-                actual.getManufacturer().equals(expected.getManufacturer())));
+        Mockito.verify(autoRepository).update(argThat(expected -> actual.getId().equals(expected.getId()) && actual.getManufacturer().equals(expected.getManufacturer())));
     }
 
     @Test
@@ -178,11 +180,7 @@ class VehicleServiceTest {
     @Test
     void saveBuses() {
         //configuration
-        final List<Bus> buses = List.of(
-                createBus(),
-                createBus(),
-                createBus()
-        );
+        final List<Bus> buses = List.of(createBus(), createBus(), createBus());
 
         //call test method
         targetBusService.saveAll(buses);
@@ -205,8 +203,7 @@ class VehicleServiceTest {
         Mockito.verify(busRepository).update(argThat(new ArgumentMatcher<>() {
             @Override
             public boolean matches(Bus expected) {
-                return actual.getId().equals(expected.getId()) &&
-                        actual.getLineName().equals(expected.getLineName());
+                return actual.getId().equals(expected.getId()) && actual.getLineName().equals(expected.getLineName());
             }
         }));
     }
@@ -260,11 +257,7 @@ class VehicleServiceTest {
     @Test
     void saveSportCars() {
         //configuration
-        final List<SportCar> cars = List.of(
-                createSportcar(),
-                createSportcar(),
-                createSportcar()
-        );
+        final List<SportCar> cars = List.of(createSportcar(), createSportcar(), createSportcar());
 
         //call test method
         targetSportCarService.saveAll(cars);
@@ -287,8 +280,7 @@ class VehicleServiceTest {
         Mockito.verify(sportCarRepository).update(argThat(new ArgumentMatcher<>() {
             @Override
             public boolean matches(SportCar expected) {
-                return actual.getId().equals(expected.getId()) &&
-                        actual.getModel().equals(expected.getModel());
+                return actual.getId().equals(expected.getId()) && actual.getModel().equals(expected.getModel());
             }
         }));
     }

@@ -1,9 +1,6 @@
 package com;
 
-import com.model.vehicle.Auto;
-import com.model.vehicle.Bus;
-import com.model.vehicle.Manufacturer;
-import com.model.vehicle.SportCar;
+import com.model.vehicle.*;
 import com.repository.AutoRepository;
 import com.repository.BusRepository;
 import com.repository.SportCarRepository;
@@ -48,5 +45,13 @@ public class Main {
         SPORT_CAR_SERVICE.printAll();
 
         AUTO_SERVICE.getTotalSumOf(autos.get(2).getId());
+
+        Garage<Bus> busGarage = new Garage<>();
+        busGarage.add(buses.get(0));
+        busGarage.addFirst(buses.get(1));
+        busGarage.add(1, buses.get(2));
+        System.out.println(busGarage.toString());
+        busGarage.set(0, buses.get(3));
+        System.out.println(busGarage.toString());
     }
 }
